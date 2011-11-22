@@ -1,24 +1,36 @@
 import sys
-fo = open(sys.argv[3],"r")
-lines = fo.readlines()
-count_line=0
-#print len(lines)
-number = sys.argv[2]
-char = sys.argv[1]
+import time
 
-if char ==  '-n'    :
-    
-    for i in lines:
-    #print len(i)
-    
-        count_line +=1
-#print c
-        if count_line > (len(lines) - int(number)) and count_line <= (len(lines)):
-            print i,
+def tail_n(n,file):
+    fo = open(file,'r')
+    n= int(number_lines)    # number of lines need show
+    lines = fo.readlines()     
+    nlines = len(lines)     
+    if n > nlines:
+        n = nlines
+    for i in range(nlines - n, nlines):
+            print lines[i],
             
-else:
-    print 'Nhap vao n '
-    
-    
+def tail_f(fo):
+    fo = open(file,'r')
+    fo.seek(0,2)
+    while True:
+        lines =fo.readlines()
+        if not lines:
+            time.sleep(0.1)
+            continue
+        yield lines
+        
 
+if sys.argv[1]=='-n':
+    number_lines=sys.argv[2]
+    file = sys.argv[3]
+    tail_n(sys.argv[2],sys.argv[3])
+
+elif sys.argv[1]=='-f':
+    number_lines=10
+    file = sys.argv[2]
+    for lines in tail_f(tail_n):
+        tail_n(10,sys.argv[2])
+        print lines
    
